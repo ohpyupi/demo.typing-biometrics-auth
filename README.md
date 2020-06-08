@@ -1,11 +1,14 @@
-# AI-based typing biometrics Authentication
+# AI-based Typing Biometrics Authentication
 ## Objective
-This demo project illustrates how AI-based typing biometrics can be used in user authentication. To simplify machine learning process for the typing biometrics, Keystroke DNA API[1] has been utilized. The API analyzes the keystokes in a form field, and returns the analysis result. Based on the analysis, even if the password is matched, the authentication can be blocked and ask additional steps to validate users' authenticity.
+This demo project illustrates how AI-based typing biometrics can be used in user authentication. To simplify machine learning process for the typing biometrics, Keystroke DNA API[1] has been utilized. The API analyzes the keystokes in a form field, and returns the analysis result. Based on the analysis, even if the password is matched, the authentication can be blocked and we can ask additional steps to validate users' authenticity.
 
-[https://react-skeleton-demo.herokuapp.com/](https://react-skeleton-demo.herokuapp.com/)
+Check out the AI-based biometrics authentication here.
+You can use the mock credential typing@biometric.com/1234qwer
+
+[https://typing-biometrics-auth-demo.herokuapp.com/](https://typing-biometrics-auth-demo.herokuapp.com/)
 
 ## Deep Dive
-First, we need to register for our `app ID` and `app secret`. You would need to go here (https://keystrokedna.com/join) and submit the form. Once you got the credentials, place those credentials in `.env` file.
+First, we need to register for our `app ID` and `app secret`. You would need to go here (https://keystrokedna.com/join) and submit the form. Once you get the credentials, place those credentials in `.env` file.
 
 ```
 KEYSTROKE_DNA_APP_ID={YOUR_APP_ID}
@@ -14,7 +17,7 @@ KEYSTROKE_DNA_APP_SECRET={YOUR_APP_SECRET}
 
 Then let's run the command `npm run dev`. The default port is 3000. Unless you set your custom port, you can access the app in `http://localhost:3000`.
 
-One the page rendered, the Keystroke DNA SDK script needs to be injected. And when the sciprt is loaded, you can run the API by calling `window.KSDNA.init()`.
+Once the page rendered, the Keystroke DNA SDK script needs to be injected. And when the sciprt is loaded, you can run the API by calling `window.KSDNA.init()`.
 
 ```js
 const loadKeystrokeDna = ({ appId, onLoad }) => {
@@ -58,7 +61,7 @@ Then the API looks for input fields with the attribute `ksdna`. Then, the keysto
 </form>
 ```
 
-When the form is submitted by users, the email, password, and the typing biometrics signature will be sent to the backend.
+When the form is submitted by users, the email, password, and the typing biometrics signature will be sent to the backend API.
 
 ```js
 // a sample request payload
@@ -71,7 +74,7 @@ const passwordDom = document.querySelector('firm input#password');
 }
 ```
 
-Below is the `login` mutation that handles the payload from the login form. The first part is for the user credential validation. To simplify the demo, the validation is just to check the email and password values. So once the user credential is validated, we call Keystroke API, and the result stored in `ksdna` will contain the analysis perfoemd by the machine learning process. 
+Below is the `login` mutation that handles the payload from the login form. The first part is for the user credential validation. To simplify the demo, the validation is just to check the email and password values. So once the user credential is validated, we call Keystroke API, and the result stored in `ksdna` will contain the analysis performed by the Keystroke DNA's machine learning model. 
 
 ```js
 const login = async (parent, { publicCredential, privateCredential, typingBiometricSignature }, { req }) => {
@@ -115,7 +118,7 @@ const ksdna = {
 
 The result was pretty amazing. I tried to login multiple times with the credential `typing@biometric`/`11111111`. And the `score` was mostly greater than 0.5. However, when my wife attempted to login with the same credential (hacking!), the API returned the result where `score` is 0 and `completeness` is 1 as well. So the API knew that another person was using my credential.
 
-In the demo, I solely used `failed` parameter, and whenever the `failed` was equal to `true`, I blocked the user authentication. And a warning message was shown to the user. But since the result is based on the machine learning process, there can be possibility of false positives and false negatives. Thus, in the production login experience, more intelligent and sophisticated controls needs to be combined. For example, rather than blocking the user authentication, maybe a gentle email can be sent to users. But if the result strongly indicates the fraud attempt, additional authentication challenge can be given to users to prove their authenticity.
+In the demo, I solely used `failed` parameter, and whenever the `failed` was equal to `true`, I blocked the user authentication. And a warning message was shown to the user. But since the result is based on the machine learning model, there can be possibility of false positives and false negatives. Thus, in the production login experience, more intelligent and sophisticated controls needs to be combined. For example, rather than blocking the user authentication, maybe a gentle email can be sent to users. But if the result strongly indicates the fraud attempt, additional authentication challenge can be given to users to prove their authenticity.
 
 For more details information regarding the analysis data, please refere to here (https://keystrokedna.com/documentation/).
 
