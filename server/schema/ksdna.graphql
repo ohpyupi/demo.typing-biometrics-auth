@@ -1,0 +1,9 @@
+type KsdnaResponse {
+    signatureId: String
+    success: Boolean
+    failed: Boolean
+    deviceHash: String
+    completeness: Float
+    status: Int
+    score: Float
+}

@@ -1,0 +1,6 @@
+*swp
+*swo
+node_modules
+dist/app.js*
+npm-debug.log
+.env

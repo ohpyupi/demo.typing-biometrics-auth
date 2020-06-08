@@ -1,0 +1,10 @@
+# import AppInfo from './app-info.graphql';
+# import AuthPayload from './authentication.graphql';
+
+type Query {
+    appInfo: AppInfo
+}
+
+type Mutation {
+    login(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
+}
