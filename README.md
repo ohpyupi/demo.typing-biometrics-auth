@@ -2,6 +2,8 @@
 ## Objective
 This demo project illustrates how AI-based typing biometrics can be used in user authentication. To simplify machine learning process for the typing biometrics, Keystroke DNA API[1] has been utilized. The API analyzes the keystokes in a form field, and returns the analysis result. Based on the analysis, even if the password is matched, the authentication can be blocked and we can ask additional steps to validate users' authenticity.
 
+<img src="./dist/img/fraud-attempt-detected.gif" width="320px">
+
 Check out the AI-based biometrics authentication here.
 You can use the mock credential typing@biometric.com/1234qwer
 
@@ -125,19 +127,6 @@ For more details information regarding the analysis data, please refere to here 
 
 ## References
 1. https://keystrokedna.com/
-
-## Appendices
-|![Login Page](./dist/img/login-page.png)|
-|:--|
-| Figure 1. The Login Page in the demo project|
-
-|![Fraud Attempt](./dist/img/fraud-attempt-detected.png)|
-|:--|
-| Figure 2. A warning message is shown if the fraud attempt is detected |
-
-|![Login Success](./dist/img/login-successful.png)|
-|:--|
-| Figure 3. Login is successful |
 
 ## License
 MIT
