@@ -16,10 +16,11 @@ export const Login = () => {
   const [privateCredential, setPrivateCredential] = useState('');
   const [typingBiometric, setTypingBiometric] = useState([]);
   const [loginMutation, { data, loading }] = useMutation(LOGIN, {
-    onCompleted(data) {
-      const isBlocked = _.get(data, 'login.isBlocked');
-      const authenticated = _.get(data, 'login.authenticated', false);
-      const loginMessage = _.get(data, 'login.message', '');
+    onCompleted(result) {
+      const isBlocked = _.get(result, 'login.isBlocked');
+      const authenticated = _.get(result, 'login.authenticated', false);
+      const loginMessage = _.get(result, 'login.message', '');
+      /* eslint no-mixed-operators: "off" */
       if (isBlocked || !authenticated && loginMessage) {
         setPublicCredential('');
         setPrivateCredential('');
@@ -46,7 +47,7 @@ export const Login = () => {
     if (!publicCredential || !privateCredential) {
       return setErrorMessage('Email and password are required.');
     }
-    loginMutation({
+    return loginMutation({
       variables: {
         publicCredential,
         privateCredential,
@@ -77,8 +78,8 @@ export const Login = () => {
         <h1 className="title">Login</h1>
         <div className="content">
           {
-            isLoggedIn ?
-              <div>
+            isLoggedIn
+              ? <div>
                 <Notification className="is-success" onClose={handleCloseErrorMessage} message={errorMessage} />
                 <div className="table-container">
                   <table className="table">
@@ -87,18 +88,18 @@ export const Login = () => {
                         <th>{key}</th>
                         <th>{ksdna[key].toString()}</th>
                       </tr>)}
-                   </tbody>
+                    </tbody>
                   </table>
                 </div>
-              </div> :
-              <form onSubmit={handleFormSubmit}>
+              </div>
+              : <form onSubmit={handleFormSubmit}>
                 {errorMessage ? <Notification className="is-warning" onClose={handleCloseErrorMessage} message={errorMessage} /> : null}
                 <Input label="Email" type="text" className="email-field" placeholder="Email" value={publicCredential} onChange={handleEmailChange} attrs={{ ksdna: 'true' }} />
                 <Input label="Password" type="password" className="password-field" placeholder="Password" value={privateCredential} onChange={handlePasswordChange} />
                 <Button type="submit" placeholder="Login" />
               </form>
           }
-       </div>
+        </div>
       </div>
     </section>
   );

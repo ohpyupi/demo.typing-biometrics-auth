@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 
 export const Notification = ({
   className, message, onClose,
-}) => {
-  return (
-    <div className={`notification ${className}`}>
+}) => <div className={`notification ${className}`}>
       <button className="delete" onClick={onClose} ></button>
       {message}
-    </div>
-  );
-};
+    </div>;
 
 Notification.propTypes = {
   className: PropTypes.string,

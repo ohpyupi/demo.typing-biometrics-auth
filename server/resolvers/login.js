@@ -14,7 +14,9 @@ const getIpAddress = (req) => {
   return ipAddr;
 };
 
-const login = async (parent, { publicCredential, privateCredential, typingBiometricSignature }, { req }) => {
+const login = async (parent, {
+  publicCredential, privateCredential, typingBiometricSignature,
+}, { req }) => {
   if (publicCredential !== 'typing@biometric.com' || privateCredential !== '1234qwer') {
     return {
       authenticated: false,
