@@ -79,19 +79,19 @@ export const Login = () => {
         <div className="content">
           {
             isLoggedIn
-              ? <div>
-                <Notification className="is-success" onClose={handleCloseErrorMessage} message={errorMessage} />
-                <div className="table-container">
-                  <table className="table">
-                    <tbody>
-                      {Object.keys(ksdna).map((key, idx) => <tr key={`tr${idx}`}>
-                        <th>{key}</th>
-                        <th>{ksdna[key].toString()}</th>
-                      </tr>)}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              ? <form>
+                  {errorMessage ? <Notification className="is-success" onClose={handleCloseErrorMessage} message={errorMessage} /> : null }
+                  <div className="table-container">
+                    <table className="table">
+                      <tbody>
+                        {Object.keys(ksdna).map((key, idx) => <tr key={`tr${idx}`}>
+                          <th>{key}</th>
+                          <th>{ksdna[key].toString()}</th>
+                        </tr>)}
+                      </tbody>
+                    </table>
+                  </div>
+                </form>
               : <form onSubmit={handleFormSubmit}>
                 {errorMessage ? <Notification className="is-warning" onClose={handleCloseErrorMessage} message={errorMessage} /> : null}
                 <Input label="Email" type="text" className="email-field" placeholder="Email" value={publicCredential} onChange={handleEmailChange} attrs={{ ksdna: 'true' }} />

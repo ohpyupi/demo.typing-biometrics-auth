@@ -32,10 +32,11 @@ const login = async (parent, {
     ipAddress: getIpAddress(req),
     userAgent: req.get('User-Agent'),
   });
+  const isSuspicious = !ksdna.success && !ksdna.failed;
   return {
-    token: !ksdna.failed ? Date.now : null,
-    authenticated: !ksdna.failed,
-    message: !ksdna.failed ? 'Successfully logged in!' : 'Fraud attempt detected',
+    token: !isSuspicious ? Date.now() : null,
+    authenticated: !isSuspicious,
+    message: !isSuspicious ? 'Successfully logged in!' : 'Fraud attempt detected',
     ksdna,
   };
 };

@@ -93,10 +93,11 @@ const login = async (parent, { publicCredential, privateCredential, typingBiomet
     ipAddress: getIpAddress(req),
     userAgent: req.get('User-Agent'),
   });
+  const isSuspicious = !ksdna.success && !ksdna.failed;
   return {
-    token: !ksdna.failed ? Date.now : null,
-    authenticated: !ksdna.failed,
-    message: !ksdna.failed ? 'Successfully logged in!' : 'Fraud attempt detected',
+    token: !isSuspicious ? Date.now() : null,
+    authenticated: !isSuspicious,
+    message: !isSuspicious ? 'Successfully logged in!' : 'Fraud attempt detected',
     ksdna,
   };
 };
@@ -118,7 +119,7 @@ const ksdna = {
 
 The result was pretty amazing. I tried to login multiple times with the credential `typing@biometric`/`11111111`. And the `score` was mostly greater than 0.5. However, when my wife attempted to login with the same credential (hacking!), the API returned the result where `score` is 0 and `completeness` is 1 as well. So the API knew that another person was using my credential.
 
-In the demo, I solely used `failed` parameter, and whenever the `failed` was equal to `true`, I blocked the user authentication. And a warning message was shown to the user. But since the result is based on the machine learning model, there can be possibility of false positives and false negatives. Thus, in the production login experience, more intelligent and sophisticated controls needs to be combined. For example, rather than blocking the user authentication, maybe a gentle email can be sent to users. But if the result strongly indicates the fraud attempt, additional authentication challenge can be given to users to prove their authenticity.
+In the demo, I used `failed` and `success` parameters to guess fraud attempts. According to the documentation, it said the case where both `failed` and `success` return `false` can be considered as suspicious. So in such case, I blocked the user authentication. And a warning message was shown to the user. But since the result is based on the machine learning model, there can be possibility of false positives and false negatives. Thus, in the production login experience, more intelligent and sophisticated controls needs to be combined. For example, rather than blocking the user authentication, maybe a gentle email can be sent to users. But if the result strongly indicates the fraud attempt, additional authentication challenge can be given to users to prove their authenticity.
 
 For more details information regarding the analysis data, please refere to here (https://keystrokedna.com/documentation/).
 
