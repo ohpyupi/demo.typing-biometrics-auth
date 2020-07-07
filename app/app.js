@@ -16,16 +16,20 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { apolloClient } from './apollo-client';
 import { AppInfo } from './containers/app-info';
 import { Login } from './containers/auth/login';
+import { Signup } from './containers/auth/signup';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <Router>
       <Switch>
         <Route path="/app-info">
-          <AppInfo />
+          <AppInfo/>
+        </Route>
+        <Route path="/signup">
+          <Signup/>
         </Route>
         <Route path="/">
-          <Login />
+          <Login/>
         </Route>
       </Switch>
     </Router>

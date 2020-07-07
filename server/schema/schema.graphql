@@ -6,5 +6,6 @@ type Query {
 }
 
 type Mutation {
+    signup(publicCredential: String!, privateCredential: String!): AuthPayload
     login(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
 }
