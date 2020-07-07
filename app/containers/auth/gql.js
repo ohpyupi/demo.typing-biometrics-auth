@@ -22,3 +22,14 @@ mutation login(
   }
 }
 `;
+
+export const SIGNUP = gql`    
+mutation signup(
+  $publicCredential: String!
+  $privateCredential: String!
+) {
+  signup(publicCredential: $publicCredential privateCredential: $privateCredential) {
+    message
+  }
+}
+`;

@@ -1,5 +1,6 @@
 const { appInfo } = require('./app-info');
 const { login } = require('./login');
+const { signup } = require('./signup');
 
 const resolvers = {
   Query: {
@@ -7,6 +8,7 @@ const resolvers = {
   },
   Mutation: {
     login,
+    signup,
   },
 };
 
