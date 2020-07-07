@@ -51,6 +51,7 @@
     "express": "^4.15.3",
     "graphql-tag": "^2.10.3",
     "lodash": "^4.17.15",
+    "mongoose": "^5.9.22",
     "morgan": "^1.8.2",
     "prop-types": "^15.7.2",
     "react": "^16.0.0",
