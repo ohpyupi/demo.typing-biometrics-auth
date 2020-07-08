@@ -18,11 +18,11 @@ export const Signup = () => {
   const { data: { notification } } = useQuery(GET_NOTIFICATION);
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
   const [signupMutation, { loading }] = useMutation(SIGNUP, {
-    onCompleted() {
+    onCompleted(result) {
       updateNotification({
         variables: {
           type: 'success',
-          message: 'Successfully registered',
+          message: _.get(result, 'signup.message'),
         },
       }).then(() => setRedirectTo('login'));
     },
@@ -32,6 +32,14 @@ export const Signup = () => {
           variables: {
             type: 'warning',
             message: 'Email already registered',
+          },
+        });
+      }
+      if (err.message.includes(ERRORS.SIGNUP.INVALID_EMAIL_FORMAT)) {
+        return updateNotification({
+          variables: {
+            type: 'warning',
+            message: 'Email format is invalid',
           },
         });
       }
