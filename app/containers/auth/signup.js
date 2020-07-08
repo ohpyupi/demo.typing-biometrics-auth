@@ -1,35 +1,45 @@
 import _ from 'lodash';
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Spinner } from '../../components/spinner';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { SIGNUP } from './gql';
+import { Notification } from '../../components/notification';
+import { SIGNUP } from '../../resolvers/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../resolvers/notification';
 import { ERRORS } from '../../lib/constants';
 import './styles.scss';
-import { Notification } from '../../components/notification';
 
 export const Signup = () => {
-  const [notification, setNotification] = useState({});
+  const [redirectTo, setRedirectTo] = useState('');
   const [publicCredential, setPublicCredential] = useState('');
   const [privateCredential, setPrivateCredential] = useState('');
+  const { data: { notification } } = useQuery(GET_NOTIFICATION);
+  const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
   const [signupMutation, { loading }] = useMutation(SIGNUP, {
     onCompleted() {
-      return setNotification({
-        type: 'success',
-        message: 'Successfully registered!',
-      });
+      updateNotification({
+        variables: {
+          type: 'success',
+          message: 'Successfully registered',
+        },
+      }).then(() => setRedirectTo('login'));
     },
     onError(err) {
       if (err.message.includes(ERRORS.SIGNUP.EXISTING_EMAIL)) {
-        return setNotification({
-          type: 'warning',
-          message: 'Email already registered',
+        return updateNotification({
+          variables: {
+            type: 'warning',
+            message: 'Email already registered',
+          },
         });
       }
-      return setNotification({
-        type: 'warning',
-        message: 'Something went wrong',
+      return updateNotification({
+        variables: {
+          type: 'warning',
+          message: 'Something went wrong',
+        },
       });
     },
   });
@@ -54,10 +64,13 @@ export const Signup = () => {
   };
   const handleCloseErrorMessage = (e) => {
     e.preventDefault();
-    setNotification({});
+    updateNotification({});
   };
   if (loading) {
     return <Spinner/>;
+  }
+  if (redirectTo) {
+    return <Redirect to={redirectTo}/>;
   }
   return (
     <section id="signup" className="section">

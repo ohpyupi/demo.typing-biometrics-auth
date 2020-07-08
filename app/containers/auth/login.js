@@ -1,20 +1,22 @@
 import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { loadKeystrokeDna } from '../../services/keystroke-dna';
 import { Spinner } from '../../components/spinner';
 import { Notification } from '../../components/notification';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { LOGIN } from './gql';
+import { LOGIN } from '../../resolvers/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../resolvers/notification';
 import './styles.scss';
 
 export const Login = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [publicCredential, setPublicCredential] = useState('');
   const [privateCredential, setPrivateCredential] = useState('');
   const [typingBiometric, setTypingBiometric] = useState([]);
+  const { data: { notification } } = useQuery(GET_NOTIFICATION);
+  const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
   const [loginMutation, { data, loading }] = useMutation(LOGIN, {
     onCompleted(result) {
       const isBlocked = _.get(result, 'login.isBlocked');
@@ -26,9 +28,19 @@ export const Login = () => {
         setPrivateCredential('');
         setPublicCredential([]);
         window.KSDNA.init();
-        return setErrorMessage(loginMessage);
+        return updateNotification({
+          variables: {
+            type: 'warning',
+            message: loginMessage,
+          },
+        });
       }
-      setErrorMessage(loginMessage);
+      updateNotification({
+        variables: {
+          type: 'success',
+          message: loginMessage,
+        },
+      });
       return setIsLoggedIn(true);
     },
   });
@@ -45,7 +57,12 @@ export const Login = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (!publicCredential || !privateCredential) {
-      return setErrorMessage('Email and password are required.');
+      return updateNotification({
+        variables: {
+          type: 'warning',
+          message: 'Email and password are required.',
+        },
+      });
     }
     return loginMutation({
       variables: {
@@ -57,7 +74,7 @@ export const Login = () => {
   };
   const handleCloseErrorMessage = (e) => {
     e.preventDefault();
-    setErrorMessage('');
+    updateNotification({});
   };
   useEffect(() => {
     loadKeystrokeDna({
@@ -80,7 +97,7 @@ export const Login = () => {
           {
             isLoggedIn
               ? <form>
-                  {errorMessage ? <Notification className="is-success" onClose={handleCloseErrorMessage} message={errorMessage} /> : null }
+                  {notification.message ? <Notification className="is-success" onClose={handleCloseErrorMessage} message={notification.message} /> : null }
                   <div className="table-container">
                     <table className="table">
                       <tbody>
@@ -93,7 +110,7 @@ export const Login = () => {
                   </div>
                 </form>
               : <form onSubmit={handleFormSubmit}>
-                {errorMessage ? <Notification className="is-warning" onClose={handleCloseErrorMessage} message={errorMessage} /> : null}
+                {notification.message ? <Notification className="is-warning" onClose={handleCloseErrorMessage} message={notification.message} /> : null}
                 <Input label="Email" type="text" className="email-field" placeholder="Email" value={publicCredential} onChange={handleEmailChange} attrs={{ ksdna: 'true' }} />
                 <Input label="Password" type="password" className="password-field" placeholder="Password" value={privateCredential} onChange={handlePasswordChange} />
                 <Button type="submit" placeholder="Login" />
