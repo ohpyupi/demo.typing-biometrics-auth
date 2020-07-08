@@ -28,6 +28,9 @@ ReactDOM.render(
         <Route path="/signup">
           <Signup/>
         </Route>
+        <Route path="/login">
+          <Login/>
+        </Route>
         <Route path="/">
           <Login/>
         </Route>
