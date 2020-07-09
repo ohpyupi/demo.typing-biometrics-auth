@@ -26,8 +26,8 @@ export const Signup = () => {
         },
       }).then(() => setRedirectTo('/login'));
     },
-    onError(err) {
-      if (err.message.includes(ERRORS.SIGNUP.EXISTING_EMAIL)) {
+    onError({ message = '' }) {
+      if (message.includes(ERRORS.SIGNUP.EXISTING_EMAIL)) {
         return updateNotification({
           variables: {
             type: 'warning',
@@ -35,7 +35,7 @@ export const Signup = () => {
           },
         });
       }
-      if (err.message.includes(ERRORS.SIGNUP.INVALID_EMAIL_FORMAT)) {
+      if (message.includes(ERRORS.SIGNUP.INVALID_EMAIL_FORMAT)) {
         return updateNotification({
           variables: {
             type: 'warning',

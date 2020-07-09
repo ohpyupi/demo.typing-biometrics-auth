@@ -8,6 +8,7 @@ import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { LOGIN } from '../../queries/auth';
 import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../queries/notification';
+import { ERRORS } from '../../lib/constants';
 import './styles.scss';
 
 export const Login = () => {
@@ -26,7 +27,6 @@ export const Login = () => {
       if (isBlocked || !authenticated && loginMessage) {
         setPublicCredential('');
         setPrivateCredential('');
-        setPublicCredential([]);
         window.KSDNA.init();
         return updateNotification({
           variables: {
@@ -42,6 +42,30 @@ export const Login = () => {
         },
       });
       return setIsLoggedIn(true);
+    },
+    onError({ message = '' }) {
+      if (message.includes(ERRORS.LOGIN.INVALID_CREDENTIALS)) {
+        return updateNotification({
+          variables: {
+            type: 'warning',
+            message: 'Please check your credentials.',
+          },
+        });
+      }
+      if (message.includes(ERRORS.LOGIN.USER_NOT_CONFIRMED)) {
+        return updateNotification({
+          variables: {
+            type: 'warning',
+            message: 'Please verify your email to login.',
+          },
+        });
+      }
+      return updateNotification({
+        variables: {
+          type: 'warning',
+          message: 'Something went wrong',
+        },
+      });
     },
   });
   const ksdna = _.get(data, 'login.ksdna', {});

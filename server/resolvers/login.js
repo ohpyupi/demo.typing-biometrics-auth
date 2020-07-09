@@ -1,27 +1,20 @@
+const { ApolloError } = require('apollo-server-express');
 const {
   getKsdnaApiAccessToken,
   getKsdnaScore,
 } = require('../services/keystroke-dna');
-
-const getIpAddress = (req) => {
-  let ipAddr = req.headers['x-forwarded-for'];
-  if (ipAddr) {
-    const list = ipAddr.split(',');
-    ipAddr = list[list.length - 1];
-  } else {
-    ipAddr = req.connection.remoteAddress;
-  }
-  return ipAddr;
-};
+const { getIpAddress } = require('../lib/utils');
+const { User } = require('../models/user');
 
 const login = async (parent, {
   publicCredential, privateCredential, typingBiometricSignature,
 }, { req }) => {
-  if (publicCredential !== 'typing@biometric.com' || privateCredential !== '1234qwer') {
-    return {
-      authenticated: false,
-      message: 'Invalid credentials',
-    };
+  const user = await User.findOne({ email: publicCredential });
+  if (!typingBiometricSignature || !user || !user.isValidPassword(privateCredential)) {
+    throw new ApolloError('invalid_credentials', 400);
+  }
+  if (!user.isConfirmed) {
+    throw new ApolloError('user_not_confirmed', 403);
   }
   const ksdnaToken = await getKsdnaApiAccessToken();
   const ksdna = await getKsdnaScore({
