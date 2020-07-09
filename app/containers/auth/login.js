@@ -6,8 +6,8 @@ import { Spinner } from '../../components/spinner';
 import { Notification } from '../../components/notification';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { LOGIN } from '../../resolvers/auth';
-import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../resolvers/notification';
+import { LOGIN } from '../../queries/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../queries/notification';
 import './styles.scss';
 
 export const Login = () => {

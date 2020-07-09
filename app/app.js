@@ -17,13 +17,17 @@ import { apolloClient } from './apollo-client';
 import { AppInfo } from './containers/app-info';
 import { Login } from './containers/auth/login';
 import { Signup } from './containers/auth/signup';
+import { Confirm } from './containers/auth/confirm';
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
-    <Router>
+    <Router basename="/">
       <Switch>
         <Route path="/app-info">
           <AppInfo/>
+        </Route>
+        <Route path="/confirm/:token">
+          <Confirm/>
         </Route>
         <Route path="/signup">
           <Signup/>

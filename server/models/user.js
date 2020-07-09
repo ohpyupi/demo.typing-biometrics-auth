@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   hash: { type: String, required: true },
   salt: { type: String, required: true },
   createdAt: { type: Number, default: Date.now },
-  isEmailVerified: { type: Boolean, default: false },
+  isConfirmed: { type: Boolean, default: false },
 });
 
 UserSchema.methods.setPassword = function setPassword(password) {
