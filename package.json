@@ -1,6 +1,6 @@
 {
   "name": "demo.typing-biometrics-auth",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "This demo is to showcase an authentication strategy using AI-based typing biometrics.",
   "main": "server/index.js",
   "engines": {
