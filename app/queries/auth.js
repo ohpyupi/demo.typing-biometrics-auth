@@ -33,3 +33,13 @@ export const SIGNUP = gql`
         }
     }
 `;
+
+export const CONFIRM = gql`
+    mutation confirm(
+        $token: String!
+    ) {
+        confirm(token: $token) {
+            message
+        }
+    }
+`;

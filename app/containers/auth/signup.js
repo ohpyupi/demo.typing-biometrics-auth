@@ -6,8 +6,8 @@ import { Spinner } from '../../components/spinner';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { Notification } from '../../components/notification';
-import { SIGNUP } from '../../resolvers/auth';
-import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../resolvers/notification';
+import { SIGNUP } from '../../queries/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../queries/notification';
 import { ERRORS } from '../../lib/constants';
 import './styles.scss';
 
@@ -24,7 +24,7 @@ export const Signup = () => {
           type: 'success',
           message: _.get(result, 'signup.message'),
         },
-      }).then(() => setRedirectTo('login'));
+      }).then(() => setRedirectTo('/login'));
     },
     onError(err) {
       if (err.message.includes(ERRORS.SIGNUP.EXISTING_EMAIL)) {
