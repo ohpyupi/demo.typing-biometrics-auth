@@ -5,7 +5,6 @@ This demo project illustrates how AI-based typing biometrics can be used in user
 <img src="./dist/img/fraud-attempt-detected.gif" width="320px">
 
 Check out the AI-based biometrics authentication here.
-You can use the mock credential typing@biometric.com/1234qwer
 
 [https://typing-biometrics-auth-demo.herokuapp.com/](https://typing-biometrics-auth-demo.herokuapp.com/)
 
@@ -53,7 +52,7 @@ loadKeystrokeDna({
 });
 ```
 
-Then the API looks for input fields with the attribute `ksdna`. Then, the keystoke sequence of the input field will be stored in the DOM element.
+Then the API looks for input fields with the attribute `ksdna`. Then, the keystroke sequence of the input field will be stored in the DOM element.
 
 ```html
 <form><!-- keystroke pattern on the email field will be used by Keystroke DNA API-->
@@ -119,7 +118,7 @@ const ksdna = {
 }
 ```
 
-The result was pretty amazing. I tried to login multiple times with the credential `typing@biometric`/`11111111`. And the `score` was mostly greater than 0.5. However, when my wife attempted to login with the same credential (hacking!), the API returned the result where `score` is 0 and `completeness` is 1 as well. So the API knew that another person was using my credential.
+The result was pretty amazing. I tried to login multiple times with a credential. And the `score` was mostly greater than 0.5. However, when my wife attempted to login with the same credential (hacking!), the API returned the result where `score` is 0 and `completeness` is 1 as well. So the API knew that another person was using my credential.
 
 In the demo, I used `failed` and `success` parameters to guess fraud attempts. According to the documentation, it said the case where both `failed` and `success` return `false` can be considered as suspicious. So in such case, I blocked the user authentication. And a warning message was shown to the user. But since the result is based on the machine learning model, there can be possibility of false positives and false negatives. Thus, in the production login experience, more intelligent and sophisticated controls needs to be combined. For example, rather than blocking the user authentication, maybe a gentle email can be sent to users. But if the result strongly indicates the fraud attempt, additional authentication challenge can be given to users to prove their authenticity.
 
