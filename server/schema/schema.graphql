@@ -1,8 +1,10 @@
 # import AppInfo from './app-info.graphql';
 # import AuthPayload from './authentication.graphql';
+# import User from './user.graphql';
 
 type Query {
     appInfo: AppInfo
+    user(idToken: String): User
 }
 
 type Mutation {

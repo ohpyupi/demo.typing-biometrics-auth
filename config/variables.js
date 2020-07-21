@@ -10,6 +10,12 @@ const _sharable = {
 	GMAIL_EMAIL: process.env.GMAIL_EMAIL,
 	GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
 	BASE_URL: process.env.BASE_URL,
+	JWT_TOKEN_SECRET: process.env.JWT_TOKEN_SECRET,
+	JWT_TOKEN_ISSUER: 'SJSU_CMPE235',
+	JWT_TOKEN_ALGORITHM: 'HS256',
+	JWT_TOKEN_EXPIRES_IN: 1800000,
+	IS_TYPING_AUTH_REQUIRED: false,
+	LOCAL_STORAGE_KEY: 'local_storage_key',
 };
 
 const dev = Object.assign({}, _sharable);

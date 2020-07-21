@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { ProfileCard } from '../../components/profile-card';
-import { GET_APP_INFO } from './gql';
+import { GET_APP_INFO } from '../../graphql/app-info';
 import { Spinner } from '../../components/spinner';
 
 export const AppInfo = () => {

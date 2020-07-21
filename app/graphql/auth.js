@@ -1,4 +1,17 @@
 import gql from 'graphql-tag';
+import { updateLocalStorage } from '../lib/localStorage';
+
+export const GET_ID_TOKEN = gql`
+  query getIdToken {
+    idToken @client
+  }
+`;
+
+export const UPDATED_ID_TOKEN = gql`
+    mutation updateIdToken($idToken: String) {
+        updateIdToken(idToken: $idToken) @client
+    }
+`;
 
 export const LOGIN = gql`
     mutation login(
@@ -43,3 +56,17 @@ export const CONFIRM = gql`
         }
     }
 `;
+
+export const updateIdToken = (_root, { idToken } = {}, { cache }) => {
+  const data = cache.readQuery({
+    query: GET_ID_TOKEN,
+  }) || {};
+  data.idToken = idToken;
+  cache.writeData({
+    data,
+  });
+  updateLocalStorage({
+    idToken,
+  });
+  return null;
+};
