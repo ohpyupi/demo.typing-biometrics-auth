@@ -4,6 +4,8 @@ const {
   getKsdnaScore,
 } = require('../services/keystroke-dna');
 const { getIpAddress } = require('../lib/utils');
+const { createIdToken } = require('../lib/auth');
+const { IS_TYPING_AUTH_REQUIRED } = require('../../config/variables');
 const { User } = require('../models/user');
 
 const login = async (parent, {
@@ -16,6 +18,15 @@ const login = async (parent, {
   if (!user.isConfirmed) {
     throw new ApolloError('user_not_confirmed', 403);
   }
+
+  if (!IS_TYPING_AUTH_REQUIRED) { // To ease the internal testing
+    return {
+      token: createIdToken({ email: publicCredential }),
+      authenticated: true,
+      message: 'Successfully logged in!',
+    };
+  }
+
   const ksdnaToken = await getKsdnaApiAccessToken();
   const ksdna = await getKsdnaScore({
     accessToken: ksdnaToken.access_token,

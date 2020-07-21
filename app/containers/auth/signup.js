@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Spinner } from '../../components/spinner';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { Notification } from '../../components/notification';
-import { SIGNUP } from '../../queries/auth';
-import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../queries/notification';
+import { SIGNUP, GET_ID_TOKEN } from '../../graphql/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../graphql/notification';
 import { ERRORS } from '../../lib/constants';
 import './styles.scss';
 
@@ -15,6 +15,7 @@ export const Signup = () => {
   const [redirectTo, setRedirectTo] = useState('');
   const [publicCredential, setPublicCredential] = useState('');
   const [privateCredential, setPrivateCredential] = useState('');
+  const { data: { idToken } } = useQuery(GET_ID_TOKEN);
   const { data: { notification } } = useQuery(GET_NOTIFICATION);
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
   const [signupMutation, { loading }] = useMutation(SIGNUP, {
@@ -74,6 +75,11 @@ export const Signup = () => {
     e.preventDefault();
     updateNotification({});
   };
+  useEffect(() => {
+    if (idToken) {
+      setRedirectTo('/user/profile');
+    }
+  }, []);
   if (loading) {
     return <Spinner/>;
   }

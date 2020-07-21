@@ -3,8 +3,8 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Spinner } from '../../components/spinner';
 import { Notification } from '../../components/notification';
-import { CONFIRM } from '../../queries/auth';
-import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../queries/notification';
+import { CONFIRM } from '../../graphql/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../graphql/notification';
 import './styles.scss';
 
 export const Confirm = withRouter(({ match: { params: { token } } }) => {
