@@ -15,7 +15,9 @@ const _sharable = {
 	JWT_TOKEN_ALGORITHM: 'HS256',
 	JWT_TOKEN_EXPIRES_IN: 1800000,
 	IS_TYPING_AUTH_REQUIRED: false,
+	IS_CHALLENGE_REQUIRED: true,
 	LOCAL_STORAGE_KEY: 'local_storage_key',
+	EMAIL_SENDER: 'no-reply@typing-biometrics.com',
 };
 
 const dev = Object.assign({}, _sharable);
