@@ -5,8 +5,13 @@ const {
 } = require('../services/keystroke-dna');
 const { getIpAddress } = require('../lib/utils');
 const { createIdToken } = require('../lib/auth');
-const { IS_TYPING_AUTH_REQUIRED } = require('../../config/variables');
+const { sendEmailChallengeCode } = require('../services/email');
+const {
+  IS_TYPING_AUTH_REQUIRED,
+  IS_CHALLENGE_REQUIRED,
+} = require('../../config/variables');
 const { User } = require('../models/user');
+const { AUTH_STATUS } = require('../lib/constants');
 
 const login = async (parent, {
   publicCredential, privateCredential, typingBiometricSignature,
@@ -19,10 +24,21 @@ const login = async (parent, {
     throw new ApolloError('user_not_confirmed', 403);
   }
 
-  if (!IS_TYPING_AUTH_REQUIRED) { // To ease the internal testing
+  if (IS_CHALLENGE_REQUIRED) {
+    await sendEmailChallengeCode(user);
     return {
-      token: createIdToken({ email: publicCredential }),
-      authenticated: true,
+      idToken: createIdToken({ email: publicCredential }),
+      isChallengeRequired: true,
+      isAuthenticated: false,
+      message: 'Please solve the challenge to login!',
+    };
+  }
+
+  if (!IS_TYPING_AUTH_REQUIRED) {
+    return {
+      idToken: createIdToken({ email: publicCredential, status: AUTH_STATUS.LOGGED_IN }),
+      isChallengeRequired: false,
+      isAuthenticated: true,
       message: 'Successfully logged in!',
     };
   }
@@ -38,8 +54,8 @@ const login = async (parent, {
   });
   const isSuspicious = !ksdna.success && !ksdna.failed;
   return {
-    token: !isSuspicious ? Date.now() : null,
-    authenticated: !isSuspicious,
+    idToken: !isSuspicious ? Date.now() : null,
+    isAuthenticated: !isSuspicious,
     message: !isSuspicious ? 'Successfully logged in!' : 'Fraud attempt detected',
     ksdna,
   };

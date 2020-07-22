@@ -1,9 +1,7 @@
 const { ApolloError } = require('apollo-server-express');
-const { sendEmail } = require('../services/email');
+const { sendEmailVerificationLink } = require('../services/email');
 const { User } = require('../models/user');
-const { Token } = require('../models/token');
 const { EMAIL_REGEX } = require('../lib/constants');
-const { BASE_URL } = require('../../config/variables');
 
 const signup = async (parent, {
   publicCredential, privateCredential,
@@ -20,17 +18,7 @@ const signup = async (parent, {
   });
   user.setPassword(privateCredential);
   await user.save();
-  const token = new Token({
-    /* eslint no-underscore-dangle: "off" */
-    _userId: user._id,
-  });
-  await token.save();
-  await sendEmail({
-    from: 'no-reply@typing-biometrics.com',
-    to: user.email,
-    subject: 'Please verify your email',
-    text: `Please verify your email by clicking ${BASE_URL}/confirm/${token.token}`,
-  });
+  await sendEmailVerificationLink(user);
   return {
     message: 'Verify your email to login.',
   };
