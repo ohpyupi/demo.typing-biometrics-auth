@@ -18,9 +18,6 @@ export const Profile = () => {
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
   const { data: getIdTokenData } = useQuery(GET_ID_TOKEN);
   const { loading } = useQuery(GET_USER, {
-    variables: {
-      idToken: getIdTokenData.idToken,
-    },
     onCompleted(result) {
       setUser(_.get(result, 'user', {}));
     },

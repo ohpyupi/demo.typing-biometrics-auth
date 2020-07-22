@@ -19,6 +19,7 @@ import { Login } from './containers/auth/login';
 import { Signup } from './containers/auth/signup';
 import { Confirm } from './containers/auth/confirm';
 import { Profile } from './containers/users/profile';
+import { Challenge } from './containers/auth/challenge';
 
 const bootstrap = async () => {
   const apolloClient = await getApolloClient();
@@ -32,11 +33,14 @@ const bootstrap = async () => {
           <Route path="/user/profile">
             <Profile />
           </Route>
-          <Route path="/confirm/:token">
+          <Route path="/confirm/:code">
             <Confirm />
           </Route>
           <Route path="/signup">
             <Signup />
+          </Route>
+          <Route path="/challenge">
+            <Challenge/>
           </Route>
           <Route path="/login">
             <Login />

@@ -4,11 +4,13 @@
 
 type Query {
     appInfo: AppInfo
-    user(idToken: String): User
+    user: User
 }
 
 type Mutation {
     signup(publicCredential: String!, privateCredential: String!): AuthPayload
     login(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
-    confirm(token: String!): AuthPayload
+    confirm(code: String!): AuthPayload
+    resendChallenge: AuthPayload
+    solveChallenge(code: String!): AuthPayload
 }

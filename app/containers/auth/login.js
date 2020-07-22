@@ -23,10 +23,26 @@ export const Login = () => {
   const [updateIdToken] = useMutation(UPDATED_ID_TOKEN);
   const [loginMutation, { loading }] = useMutation(LOGIN, {
     onCompleted(result) {
-      const isBlocked = _.get(result, 'login.isBlocked');
-      const authenticated = _.get(result, 'login.authenticated', false);
-      const loginMessage = _.get(result, 'login.message', 'Something went wrong');
+      const isChallengeRequired = _.get(result, 'login.isChallengeRequired');
+      const isAuthenticated = _.get(result, 'login.isAuthenticated', false);
+      const message = _.get(result, 'login.message', 'Something went wrong');
+      const newIdToken = _.get(result, 'login.idToken');
+      if (isChallengeRequired && !isAuthenticated) {
+        return updateIdToken({
+          variables: {
+            idToken: newIdToken,
+          },
+        })
+          .then(() => updateNotification({
+            variables: {
+              type: 'warning',
+              message,
+            },
+          }))
+          .then(() => setRedirectTo('/challenge'));
+      }
       /* eslint no-mixed-operators: "off" */
+      /*
       if (isBlocked || !authenticated && loginMessage) {
         setPublicCredential('');
         setPrivateCredential('');
@@ -38,12 +54,10 @@ export const Login = () => {
           },
         });
       }
-      updateIdToken({
-        variables: {
-          idToken: _.get(result, 'login.token'),
-        },
-      });
-      return setRedirectTo('/user/profile');
+      */
+      return updateIdToken({
+        idToken: newIdToken,
+      }).then(() => setRedirectTo('/user/profile'));
     },
     onError({ message = '' }) {
       if (message.includes(ERRORS.LOGIN.INVALID_CREDENTIALS)) {

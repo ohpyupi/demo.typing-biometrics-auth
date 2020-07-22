@@ -7,7 +7,7 @@ import { CONFIRM } from '../../graphql/auth';
 import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../graphql/notification';
 import './styles.scss';
 
-export const Confirm = withRouter(({ match: { params: { token } } }) => {
+export const Confirm = withRouter(({ match: { params: { code } } }) => {
   const [redirectTo, setRedirectTo] = useState('');
   const { data: { notification } } = useQuery(GET_NOTIFICATION);
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
@@ -32,7 +32,7 @@ export const Confirm = withRouter(({ match: { params: { token } } }) => {
   useEffect(() => {
     confirmMutation({
       variables: {
-        token,
+        code,
       },
     });
   }, []);
