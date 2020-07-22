@@ -6,7 +6,12 @@ import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { Notification } from '../../components/notification';
 import { parseJwtSafe } from '../../lib/utils';
-import { GET_ID_TOKEN, RESEND_CHALLENGE, SOLVE_CHALLENGE, UPDATED_ID_TOKEN } from '../../graphql/auth';
+import {
+  GET_ID_TOKEN,
+  RESEND_CHALLENGE,
+  SOLVE_CHALLENGE,
+  UPDATED_ID_TOKEN,
+} from '../../graphql/auth';
 import { AUTH_STATUS } from '../../lib/constants';
 import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../graphql/notification';
 
