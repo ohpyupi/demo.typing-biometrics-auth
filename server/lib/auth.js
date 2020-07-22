@@ -5,11 +5,14 @@ const {
   JWT_TOKEN_EXPIRES_IN,
   JWT_TOKEN_SECRET,
 } = require('../../config/variables');
+const { AUTH_STATUS } = require('./constants');
 
 const createIdToken = ({
   email,
+  status = AUTH_STATUS.PARTIALLY_AUTHENTICATED,
 }) => jwt.sign({
   email,
+  status,
 }, JWT_TOKEN_SECRET, {
   algorithm: JWT_TOKEN_ALGORITHM,
   issuer: JWT_TOKEN_ISSUER,
