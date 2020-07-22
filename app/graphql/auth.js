@@ -8,53 +8,71 @@ export const GET_ID_TOKEN = gql`
 `;
 
 export const UPDATED_ID_TOKEN = gql`
-    mutation updateIdToken($idToken: String) {
-        updateIdToken(idToken: $idToken) @client
-    }
+  mutation updateIdToken($idToken: String) {
+    updateIdToken(idToken: $idToken) @client
+  }
 `;
 
 export const LOGIN = gql`
-    mutation login(
-        $publicCredential: String!,
-        $privateCredential: String!,
-        $typingBiometricSignature: String!
-    ) {
-        login(publicCredential: $publicCredential, privateCredential: $privateCredential, typingBiometricSignature: $typingBiometricSignature) {
-            token
-            authenticated
-            message
-            ksdna {
-                signatureId
-                success
-                failed
-                deviceHash
-                completeness
-                status
-                score
-            }
-        }
+  mutation login(
+    $publicCredential: String!,
+    $privateCredential: String!,
+    $typingBiometricSignature: String!
+  ) {
+    login(publicCredential: $publicCredential, privateCredential: $privateCredential, typingBiometricSignature: $typingBiometricSignature) {
+      idToken
+      isAuthenticated
+      isChallengeRequired
+      message
+      ksdna {
+        signatureId
+        success
+        failed
+        deviceHash
+        completeness
+        status
+        score
+      }
     }
+  }
 `;
 
 export const SIGNUP = gql`
-    mutation signup(
-        $publicCredential: String!
-        $privateCredential: String!
-    ) {
-        signup(publicCredential: $publicCredential privateCredential: $privateCredential) {
-            message
-        }
+  mutation signup(
+    $publicCredential: String!
+    $privateCredential: String!
+  ) {
+    signup(publicCredential: $publicCredential privateCredential: $privateCredential) {
+      message
     }
+  }
 `;
 
 export const CONFIRM = gql`
-    mutation confirm(
-        $token: String!
-    ) {
-        confirm(token: $token) {
-            message
-        }
+  mutation confirm(
+    $code: String!
+  ) {
+    confirm(code: $code) {
+      message
     }
+  }
+`;
+
+export const RESEND_CHALLENGE = gql`
+  mutation resendChallenge {
+    resendChallenge {
+      message
+    }
+  }
+`;
+
+export const SOLVE_CHALLENGE = gql`
+  mutation solveChallenge($code: String!) {
+    solveChallenge(code: $code) {
+      message
+      idToken
+    }
+  }
 `;
 
 export const updateIdToken = (_root, { idToken } = {}, { cache }) => {
