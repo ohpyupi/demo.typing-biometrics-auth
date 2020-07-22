@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 
-const TokenSchema = new mongoose.Schema({
+const ChallengeSchema = new mongoose.Schema({
   _userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  token: { type: String, required: true, default: () => crypto.randomBytes(16).toString('hex') },
+  code: { type: String, required: true, default: () => crypto.randomBytes(16).toString('hex') },
   createdAt: {
     type: Number,
     required: true,
@@ -12,8 +12,8 @@ const TokenSchema = new mongoose.Schema({
   },
 });
 
-const Token = mongoose.model('Token', TokenSchema);
+const Challenge = mongoose.model('Challenge', ChallengeSchema);
 
 module.exports = {
-  Token,
+  Challenge,
 };
