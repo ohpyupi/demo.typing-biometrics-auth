@@ -1,10 +1,11 @@
 const { appInfo } = require('./app-info');
 const { login } = require('./login');
 const { signup } = require('./signup');
-const { confirm } = require('./confirm');
+const { confirmEmail } = require('./confirmEmail');
 const { user } = require('./user');
 const { resendChallenge } = require('./resendChallenge');
 const { solveChallenge } = require('./solveChallenge');
+const { confirmDevice } = require('./confirmDevice');
 
 const resolvers = {
   Query: {
@@ -14,9 +15,10 @@ const resolvers = {
   Mutation: {
     login,
     signup,
-    confirm,
+    confirmEmail,
     resendChallenge,
     solveChallenge,
+    confirmDevice,
   },
 };
 
