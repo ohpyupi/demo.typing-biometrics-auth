@@ -14,8 +14,7 @@ const _sharable = {
 	JWT_TOKEN_ISSUER: 'SJSU_CMPE235',
 	JWT_TOKEN_ALGORITHM: 'HS256',
 	JWT_TOKEN_EXPIRES_IN: 1800000,
-	IS_TYPING_AUTH_REQUIRED: false,
-	IS_CHALLENGE_REQUIRED: true,
+	IS_CHALLENGE_REQUIRED: false,
 	LOCAL_STORAGE_KEY: 'local_storage_key',
 	EMAIL_SENDER: 'no-reply@typing-biometrics.com',
 };
