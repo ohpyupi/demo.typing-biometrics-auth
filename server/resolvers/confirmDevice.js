@@ -21,7 +21,10 @@ const confirmDevice = async (parent, { code }) => {
   device.isConfirmed = true;
   await device.save();
   const ksdnaToken = await getKsdnaApiAccessToken();
-  const result = await approveKsdnaNewDevice(ksdnaToken.access_token, device);
+  const { success } = await approveKsdnaNewDevice(ksdnaToken.access_token, device);
+  if (!success) {
+    throw new ApolloError('Something went wrong!', 500);
+  }
   return {
     message: 'Successfully approved your new device!',
   };

@@ -22,7 +22,7 @@ export const loadKeystrokeDna = ({ appId }) => new Promise((resolve) => {
   script.async = 1;
   script.src = KSDNA_SDK_URL;
   script.onload = () => resolve();
-  firstScript.parentNode.insertBefore(script, firstScript);
+  return firstScript.parentNode.insertBefore(script, firstScript);
 });
 
 export const initKeystrokeDna = () => window.KSDNA.ready(() => window.KSDNA.init());
