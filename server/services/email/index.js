@@ -31,6 +31,19 @@ const sendEmailChallengeCode = async ({ _id: userId, email }) => {
   });
 };
 
+const sendEmailConfirmDeviceLink = async ({ email }, { _id: deviceId }) => {
+  const challenge = new Challenge({
+    _deviceId: deviceId,
+  });
+  await challenge.save();
+  await sendEmail({
+    from: EMAIL_SENDER,
+    to: email,
+    subject: 'New device login is attempted!',
+    text: `Please approve your device by clicking : ${BASE_URL}/confirm/device/${challenge.code}`,
+  });
+};
+
 const sendEmailVerificationLink = async ({ _id: userId, email }) => {
   const challenge = new Challenge({
     _userId: userId,
@@ -40,7 +53,7 @@ const sendEmailVerificationLink = async ({ _id: userId, email }) => {
     from: EMAIL_SENDER,
     to: email,
     subject: 'Please verify your email',
-    text: `Please verify your email by clicking ${BASE_URL}/confirm/${challenge.code}`,
+    text: `Please verify your email by clicking ${BASE_URL}/confirm/email/${challenge.code}`,
   });
 };
 
@@ -48,4 +61,5 @@ module.exports = {
   sendEmail,
   sendEmailChallengeCode,
   sendEmailVerificationLink,
+  sendEmailConfirmDeviceLink,
 };

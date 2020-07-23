@@ -15,25 +15,20 @@ export const UPDATED_ID_TOKEN = gql`
 
 export const LOGIN = gql`
   mutation login(
-    $publicCredential: String!,
-    $privateCredential: String!,
+    $publicCredential: String!
+    $privateCredential: String!
     $typingBiometricSignature: String!
   ) {
-    login(publicCredential: $publicCredential, privateCredential: $privateCredential, typingBiometricSignature: $typingBiometricSignature) {
+    login(
+      publicCredential: $publicCredential
+      privateCredential: $privateCredential
+      typingBiometricSignature: $typingBiometricSignature
+    ) {
       idToken
       isAuthenticated
       isChallengeRequired
       message
-      ksdna {
-        signatureId
-        success
-        failed
-        deviceHash
-        completeness
-        status
-        score
-      }
-    }
+   }
   }
 `;
 
@@ -41,18 +36,33 @@ export const SIGNUP = gql`
   mutation signup(
     $publicCredential: String!
     $privateCredential: String!
+    $typingBiometricSignature: String!
   ) {
-    signup(publicCredential: $publicCredential privateCredential: $privateCredential) {
+    signup(
+      publicCredential: $publicCredential
+      privateCredential: $privateCredential
+      typingBiometricSignature: $typingBiometricSignature
+    ) {
       message
     }
   }
 `;
 
-export const CONFIRM = gql`
-  mutation confirm(
+export const CONFIRM_EMAIL = gql`
+  mutation confirmEmail(
     $code: String!
   ) {
-    confirm(code: $code) {
+    confirmEmail(code: $code) {
+      message
+    }
+  }
+`;
+
+export const CONFIRM_DEVICE = gql`
+  mutation confirmDevice(
+    $code: String!
+  ) {
+    confirmDevice(code: $code) {
       message
     }
   }

@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { loadKeystrokeDna } from '../../services/keystroke-dna';
 import { Spinner } from '../../components/spinner';
 import { Notification } from '../../components/notification';
 import { Input } from '../../components/input';
@@ -10,6 +9,7 @@ import { Button } from '../../components/button';
 import { LOGIN, GET_ID_TOKEN, UPDATED_ID_TOKEN } from '../../graphql/auth';
 import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../graphql/notification';
 import { ERRORS } from '../../lib/constants';
+import { initKeystrokeDna } from '../../services/keystroke-dna';
 import './styles.scss';
 
 export const Login = () => {
@@ -41,25 +41,16 @@ export const Login = () => {
           }))
           .then(() => setRedirectTo('/challenge'));
       }
-      /* eslint no-mixed-operators: "off" */
-      /*
-      if (isBlocked || !authenticated && loginMessage) {
-        setPublicCredential('');
-        setPrivateCredential('');
-        window.KSDNA.init();
-        return updateNotification({
-          variables: {
-            type: 'warning',
-            message: loginMessage,
-          },
-        });
-      }
-      */
       return updateIdToken({
-        idToken: newIdToken,
+        variables: {
+          idToken: newIdToken,
+        },
       }).then(() => setRedirectTo('/user/profile'));
     },
     onError({ message = '' }) {
+      setPublicCredential('');
+      setPrivateCredential('');
+      initKeystrokeDna();
       if (message.includes(ERRORS.LOGIN.INVALID_CREDENTIALS)) {
         return updateNotification({
           variables: {
@@ -116,19 +107,10 @@ export const Login = () => {
     updateNotification({});
   };
   useEffect(() => {
-    loadKeystrokeDna({
-      appId: process.env.KEYSTROKE_DNA_APP_ID,
-      onLoad() {
-        window.KSDNA.ready(() => {
-          window.KSDNA.init();
-        });
-      },
-    });
-  }, []);
-  useEffect(() => {
     if (idToken) {
       setRedirectTo('/user/profile');
     }
+    initKeystrokeDna();
   }, []);
   if (loading) {
     return <Spinner/>;

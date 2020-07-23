@@ -2,7 +2,7 @@ const { ApolloError } = require('apollo-server-express');
 const { Challenge } = require('../models/challenge');
 const { User } = require('../models/user');
 
-const confirm = async (parent, { code }) => {
+const confirmEmail = async (parent, { code }) => {
   if (!code) {
     throw new ApolloError('invalid_code', 400);
   }
@@ -17,10 +17,10 @@ const confirm = async (parent, { code }) => {
   user.isConfirmed = true;
   await user.save();
   return {
-    message: 'success',
+    message: 'Successfully verified your email, please login!',
   };
 };
 
 module.exports = {
-  confirm,
+  confirmEmail,
 };

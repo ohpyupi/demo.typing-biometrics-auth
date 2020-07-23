@@ -8,9 +8,10 @@ type Query {
 }
 
 type Mutation {
-    signup(publicCredential: String!, privateCredential: String!): AuthPayload
+    signup(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
     login(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
-    confirm(code: String!): AuthPayload
+    confirmEmail(code: String!): AuthPayload
     resendChallenge: AuthPayload
     solveChallenge(code: String!): AuthPayload
+    confirmDevice(code: String!): AuthPayload
 }

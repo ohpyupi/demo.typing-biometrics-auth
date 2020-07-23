@@ -17,11 +17,16 @@ import { getApolloClient } from './apollo-client';
 import { AppInfo } from './containers/app-info';
 import { Login } from './containers/auth/login';
 import { Signup } from './containers/auth/signup';
-import { Confirm } from './containers/auth/confirm';
+import { ConfirmEmail } from './containers/auth/confirmEmail';
 import { Profile } from './containers/users/profile';
 import { Challenge } from './containers/auth/challenge';
+import { ConfirmDevice } from './containers/auth/confirmDevice';
+import { loadKeystrokeDna } from './services/keystroke-dna';
 
 const bootstrap = async () => {
+  await loadKeystrokeDna({
+    appId: process.env.KEYSTROKE_DNA_APP_ID,
+  });
   const apolloClient = await getApolloClient();
   ReactDOM.render(
     <ApolloProvider client={apolloClient}>
@@ -33,8 +38,11 @@ const bootstrap = async () => {
           <Route path="/user/profile">
             <Profile />
           </Route>
-          <Route path="/confirm/:code">
-            <Confirm />
+          <Route path="/confirm/email/:code">
+            <ConfirmEmail />
+          </Route>
+          <Route path="/confirm/device/:code">
+            <ConfirmDevice />
           </Route>
           <Route path="/signup">
             <Signup />

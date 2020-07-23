@@ -2,7 +2,8 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const ChallengeSchema = new mongoose.Schema({
-  _userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+  _userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  _deviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Device' },
   code: { type: String, required: true, default: () => crypto.randomBytes(16).toString('hex') },
   createdAt: {
     type: Number,
