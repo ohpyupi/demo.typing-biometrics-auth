@@ -1,12 +1,17 @@
 # import AppInfo from './app-info.graphql';
 # import AuthPayload from './authentication.graphql';
+# import User from './user.graphql';
 
 type Query {
     appInfo: AppInfo
+    user: User
 }
 
 type Mutation {
-    signup(publicCredential: String!, privateCredential: String!): AuthPayload
+    signup(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
     login(publicCredential: String!, privateCredential: String!, typingBiometricSignature: String!): AuthPayload
-    confirm(token: String!): AuthPayload
+    confirmEmail(code: String!): AuthPayload
+    resendChallenge: AuthPayload
+    solveChallenge(code: String!): AuthPayload
+    confirmDevice(code: String!): AuthPayload
 }

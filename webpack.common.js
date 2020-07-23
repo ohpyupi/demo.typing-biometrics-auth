@@ -23,6 +23,7 @@ module.exports = {
 				loader: 'babel-loader',
 				options: {
 					presets: ['@babel/preset-env', '@babel/preset-react'],
+					plugins: ['@babel/transform-runtime'],
 				}
 			},
 			{
@@ -58,6 +59,7 @@ module.exports = {
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify(VAR.NODE_ENV),
 			'process.env.KEYSTROKE_DNA_APP_ID': JSON.stringify(VAR.KEYSTROKE_DNA_APP_ID),
+			'process.env.LOCAL_STORAGE_KEY': JSON.stringify(VAR.LOCAL_STORAGE_KEY),
 		})
 	]
 };

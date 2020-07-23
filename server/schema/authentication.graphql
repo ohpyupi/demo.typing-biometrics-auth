@@ -1,10 +1,11 @@
 # import KsdnaResponse from './ksdna.graphql';
 
 type AuthPayload {
-    token: String
+    idToken: String
     isBlocked: Boolean
     score: Float
     message: String
-    authenticated: Boolean
+    isAuthenticated: Boolean
+    isChallengeRequired: Boolean
     ksdna: KsdnaResponse
 }

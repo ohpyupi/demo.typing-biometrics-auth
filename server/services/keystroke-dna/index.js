@@ -42,7 +42,25 @@ const getKsdnaScore = async ({
   }
 };
 
+const approveKsdnaNewDevice = async (accessToken, { deviceHash }) => {
+  try {
+    await axios({
+      method: 'put',
+      url: `${KEYSTROKE_DNA_HOST}/api/devices/approve/hash/${deviceHash}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return {
+      success: true,
+    };
+  } catch (err) {
+    return {};
+  }
+};
+
 module.exports = {
   getKsdnaApiAccessToken,
   getKsdnaScore,
+  approveKsdnaNewDevice,
 };

@@ -1,0 +1,16 @@
+#profile {
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 320px;
+            div.field {
+                width: 100%;
+            }
+        }
+    }
+}

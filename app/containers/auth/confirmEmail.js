@@ -1,22 +1,25 @@
+import _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { Redirect, withRouter } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Spinner } from '../../components/spinner';
 import { Notification } from '../../components/notification';
-import { CONFIRM } from '../../queries/auth';
-import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../queries/notification';
+import { CONFIRM_EMAIL } from '../../graphql/auth';
+import { GET_NOTIFICATION, UPDATE_NOTIFICATION } from '../../graphql/notification';
 import './styles.scss';
 
-export const Confirm = withRouter(({ match: { params: { token } } }) => {
+export const ConfirmEmail = withRouter(({
+  match: { params: { code } },
+}) => {
   const [redirectTo, setRedirectTo] = useState('');
   const { data: { notification } } = useQuery(GET_NOTIFICATION);
   const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
-  const [confirmMutation, { called, error }] = useMutation(CONFIRM, {
-    onCompleted() {
+  const [confirmEmailMutation, { called, error }] = useMutation(CONFIRM_EMAIL, {
+    onCompleted(result) {
       updateNotification({
         variables: {
           type: 'success',
-          message: 'Successfully verified your email, please login!',
+          message: _.get(result, 'confirmEmail.message'),
         },
       }).then(() => setRedirectTo('/login'));
     },
@@ -30,9 +33,9 @@ export const Confirm = withRouter(({ match: { params: { token } } }) => {
     },
   });
   useEffect(() => {
-    confirmMutation({
+    confirmEmailMutation({
       variables: {
-        token,
+        code,
       },
     });
   }, []);
@@ -47,7 +50,7 @@ export const Confirm = withRouter(({ match: { params: { token } } }) => {
     return <Spinner/>;
   }
   return (
-    <section id="confirm" className="section">
+    <section id="confirm-email" className="section">
       <div className="container">
         <h1 className="title">Confirm your email</h1>
         <div className="content">
