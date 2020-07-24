@@ -8,6 +8,9 @@ Check out the AI-based biometrics authentication here.
 
 [https://typing-biometrics-auth-demo.herokuapp.com/](https://typing-biometrics-auth-demo.herokuapp.com/)
 
+## Pages
+- [Technical Design](./docs/TECHNICAL_DESIGN.md)
+
 ## Deep Dive
 First, we need to register for our `app ID` and `app secret`. You would need to go here (https://keystrokedna.com/join) and submit the form. Once you get the credentials, place those credentials in `.env` file.
 
