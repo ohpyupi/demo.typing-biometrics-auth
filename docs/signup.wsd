@@ -1,0 +1,34 @@
+@startuml
+actor User as U
+participant WebApp as W
+participant "GraphQL API" as G
+participant "Database" as D
+participant "Keystroke DNA API" as K
+participant "Gmail API" as GM
+
+U -> W: Lands on /signup URL
+W -> U: Render a signup form page
+
+U -> W: Types email/password
+W -> G: Initiate the mutation signup
+G -> D: Checks if a user does not exist
+D -> G: OK
+
+G -> K: Register the typing pattern via \n POST /trusted/identify
+K -> G: OK
+G -> D: Generates a challenge code \nfor email verification
+D -> G: Requests Gmail to send a message \nwith a email verification link
+GM -> U: Delivers the message
+
+G -> W: OK
+W -> U: Redirect user to /login \nShows a message for email verification
+
+...
+
+U -> W: Lands on /confirm/email/:code \nvia a link on the Gmail message
+W -> G: Initiates the mutation confirmEmail
+G -> D: Checks if the email verification \ncode is valid
+D -> G: OK
+G -> W: Drops access token \n(logged_in)
+W -> U: Redirects to /user/profile
+@enduml

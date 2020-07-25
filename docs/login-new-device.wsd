@@ -1,0 +1,48 @@
+@startuml
+actor User as U
+participant WebApp as W
+participant "GraphQL API" as G
+participant "Database" as D
+participant "Keystroke DNA API" as K
+participant "Gmail API" as GM
+
+U -> W: Lands on /login URL
+W -> U: Render a login form page
+
+U -> W: Types email/password
+W -> G: Initiate the mutation login
+G -> D: Checks if a user data exists
+D -> G
+G -> G: Validates the user credential
+
+G -> K: Analyzes the typing pattern via \n POST /trusted/identify
+K -> G: New Device detected
+G -> D: Generates two challenge codes \nfor OTP and device approval
+D -> G: Requests Gmail to send two messages \nwith the challenge codes
+GM -> U: Delivers the messages
+
+G -> W: Drops an access token \n(partially_authenticated)
+W -> U: Redirect user to /challenge
+
+...
+
+U -> W: Submits the OTP code
+W -> G: Initiates the mutation solveChallenge
+G -> D: Checks if the OTP code is valid
+D -> G: OK
+G -> W: Drops access token \n(logged_in)
+W -> U: Redirects to /user/profile
+
+opt Approve the new device
+U -> W: Lands on /confirm/device/:code \nvia a link on the Gmail message
+W -> G: initiates the mutation confirmDevice
+G -> D: Checks is the device code is valid
+D -> G: OK
+
+G -> K: Register the device via \nPOST /api/devices/approve/hash/:deviceHash
+K -> G: OK
+
+G -> W: OK
+W -> U: Shows a message for \nthe successful device approval
+end
+@enduml

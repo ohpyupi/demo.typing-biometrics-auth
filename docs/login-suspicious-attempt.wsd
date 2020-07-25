@@ -1,0 +1,35 @@
+@startuml
+actor User as U
+participant WebApp as W
+participant "GraphQL API" as G
+participant "Database" as D
+participant "Keystroke DNA API" as K
+participant "Gmail API" as GM
+
+U -> W: Lands on /login URL
+W -> U: Render a login form page
+
+U -> W: Types email/password
+W -> G: Initiate the mutation login
+G -> D: Checks if a user data exists
+D -> G
+G -> G: Validates the user credential
+
+G -> K: Analyzes the typing pattern via \n POST /trusted/identify
+K -> G: Suspicious Attempt
+G -> D: Generates a challenge code for OTP
+D -> G: Requests Gmail to send a message \nwith the OTP code
+GM -> U: Delivers the message
+
+G -> W: Drops an access token \n(partially_authenticated)
+W -> U: Redirect user to /challenge
+
+...
+
+U -> W: Submits the OTP code
+W -> G: Initiates the mutation solveChallenge
+G -> D: Checks if the OTP code is valid
+D -> G: OK
+G -> W: Drops access token \n(logged_in)
+W -> U: Redirects to /user/profile
+@enduml

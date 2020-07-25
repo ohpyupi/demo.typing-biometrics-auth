@@ -1,0 +1,22 @@
+@startuml
+actor User as U
+participant WebApp as W
+participant "GraphQL API" as G
+participant "Database" as D
+participant "Keystroke DNA API" as K
+
+U -> W: Lands on /login URL
+W -> U: Render a login form page
+
+U -> W: Types email/password
+W -> G: Initiates the mutation login
+G -> D: Checks if a user data exists
+D -> G: OK
+
+G -> K: Analyzes the typing pattern via \n POST /trusted/identify
+K -> G: OK
+
+G -> W: Drops an access token \n(logged_in)
+W -> U: Redirects user to /user/profile
+@enduml
+
