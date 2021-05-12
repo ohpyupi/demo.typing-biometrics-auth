@@ -56,7 +56,7 @@
     "lodash": "^4.17.19",
     "mongoose": "^5.9.22",
     "morgan": "^1.8.2",
-    "nodemailer": "^6.4.10",
+    "nodemailer": "^6.4.16",
     "prop-types": "^15.7.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
